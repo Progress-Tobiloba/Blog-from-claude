@@ -17,8 +17,8 @@ app.use(express.json());
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
-// Serve the static files from Vite's build folder
-app.use(express.static(path.join(__dirname, 'dist')));
+// Serve static assets from Vite's build output folder
+app.use(express.static(path.resolve(__dirname, 'dist')));
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -221,9 +221,9 @@ app.delete('/api/comments/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Catch-all route to serve index.html for frontend routing
+// Catch-all route using absolute paths to safely target index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
 });
 
 app.use((err, req, res, next) => {
